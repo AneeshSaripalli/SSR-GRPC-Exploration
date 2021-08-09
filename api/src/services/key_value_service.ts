@@ -22,6 +22,7 @@ class KeyValue implements IKeyValueServer {
     callback: sendUnaryData<GetValuesResponse>
   ): void {
     const res = new GetValuesResponse();
+    res.setValue("fake value");
     callback(null, res);
   }
 

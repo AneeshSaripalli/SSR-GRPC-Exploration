@@ -13,6 +13,7 @@
     "build:proto": "node bin/proto",
     "prestart": "npm run build",
     "start": "node dist",
+    "dev": "ts-node-dev src/index.ts",
     "client": "node dist/client",
     "health": "node dist/health"
   },
@@ -37,6 +38,7 @@
     "protobufjs": "^6.11.2",
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "author": "AneeshSaripalli",

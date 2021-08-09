@@ -1,0 +1,16 @@
+FROM node:12-alpine
+
+WORKDIR /app
+
+ARG NPM_TOKEN
+
+COPY package.json .
+
+# Create a temporary .npmrc file and delete it to prevent the NPM_TOKEN
+# from being built into any of the FS layers.
+RUN npm install && \
+    npm update
+
+COPY . .
+
+CMD ["npm", "start"]
