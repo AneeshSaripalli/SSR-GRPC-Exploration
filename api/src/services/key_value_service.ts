@@ -12,7 +12,8 @@ import {
 } from "../../../protos/models/key_value_service_pb";
 
 class KeyValue implements IKeyValueServer {
-  // Argument of type 'Greeter' is not assignable to parameter of type 'UntypedServiceImplementation'.
+  // Argument of type 'Greeter' is not assignable to parameter of
+  // type 'UntypedServiceImplementation'.
   // Index signature is missing in type 'Greeter'.ts(2345)
   [method: string]: UntypedHandleCall;
 

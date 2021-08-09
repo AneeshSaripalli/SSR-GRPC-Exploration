@@ -12,7 +12,7 @@ import { IGreeterServer } from "../../../protos/models/hello_world_grpc_pb";
 import {
   HelloRequest,
   HelloResponse,
-} from "../../../protos/models/helloworld_pb";
+} from "../../../protos/models/hello_world_pb";
 import { ServiceError } from "./error";
 
 /**
@@ -23,6 +23,7 @@ class Greeter implements IGreeterServer {
   // Argument of type 'Greeter' is not assignable to parameter of type 'UntypedServiceImplementation'.
   // Index signature is missing in type 'Greeter'.ts(2345)
   [method: string]: UntypedHandleCall;
+
   /**
    * Implements the SayHello RPC method.
    */
@@ -30,7 +31,7 @@ class Greeter implements IGreeterServer {
     call: ServerUnaryCall<HelloRequest, HelloResponse>,
     callback: sendUnaryData<HelloResponse>
   ): void {
-    const res = new HelloResponse();
+    const res: HelloResponse = new HelloResponse();
     const name = call.request.getName();
 
     if (name === "error") {
@@ -42,14 +43,7 @@ class Greeter implements IGreeterServer {
     }
 
     const metadataValue = call.metadata.get("foo");
-
     res.setMessage(`Hello ${metadataValue.length > 0 ? metadataValue : name}`);
-
-    const paramListValue = call.request.getParamListValue();
-    const paramValue = call.request.getParamValue();
-
-    res.setParamListValue(paramListValue);
-    res.setParamValue(paramValue);
 
     callback(null, res);
   }
@@ -66,7 +60,7 @@ class Greeter implements IGreeterServer {
         data.push(`${req.getName()} - ${randomBytes(5).toString("hex")}`);
       })
       .on("end", () => {
-        const res = new HelloResponse();
+        const res: HelloResponse = new HelloResponse();
         res.setMessage(data.join("\n"));
 
         callback(null, res);

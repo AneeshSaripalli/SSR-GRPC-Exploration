@@ -9,7 +9,7 @@
     "incremental": true,
     "declaration": true,
     "newLine": "lf",
-    "strict": true,
+    "strict": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,

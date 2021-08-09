@@ -14,7 +14,7 @@ export class ServiceError extends Error implements Partial<grpcServiceError> {
     public code: status,
     public message: string,
     public details?: string,
-    public metadata?: Metadata
+    public metadata?: Metadata,
   ) {
     super(message);
   }

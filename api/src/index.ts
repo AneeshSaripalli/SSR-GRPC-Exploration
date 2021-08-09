@@ -1,5 +1,5 @@
 import { Server, ServerCredentials } from "@grpc/grpc-js";
-import { GreeterService } from "../../protos/models/helloworld_grpc_pb";
+import { GreeterService } from "../../protos/models/hello_world_grpc_pb";
 import { Greeter } from "./services/hello_world_service";
 
 // Do not use @grpc/proto-loader
@@ -14,6 +14,7 @@ server.bindAsync(
   "0.0.0.0:50051",
   ServerCredentials.createInsecure(),
   (err: Error | null, bindPort: number) => {
+    console.log("Bound to port:", bindPort);
     if (err) {
       throw err;
     }
