@@ -1,11 +1,11 @@
 {
   "name": "ssr-grpc-proto-lib",
-  "version": "0.1.5",
+  "version": "0.1.12",
   "engines": {
     "node": ">=12"
   },
   "scripts": {
-    "build": "rimraf models/*.ts && rimraf models/*.js && node bin/proto",
+    "build": "node bin/proto",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "tsc",
     "clean": "rm -rf dist",
@@ -25,11 +25,5 @@
     "typescript": "^4.3.5"
   },
   "author": "AneeshSaripalli",
-  "license": "MIT",
-  "files": [
-    "tsconfig.json",
-    "package.json",
-    "protos/",
-    "bin/"
-  ]
+  "license": "MIT"
 }

@@ -3,13 +3,13 @@ import {
   sendUnaryData,
   ServerUnaryCall,
 } from "@grpc/grpc-js/build/src/server-call";
-import { IKeyValueServer } from "../../../protos/models/key_value_service_grpc_pb";
+import { IKeyValueServer } from "ssr-grpc-proto-lib/models/key_value_service_grpc_pb";
 import {
   GetValuesRequest,
   GetValuesResponse,
   SetValueRequest,
   SetValueResponse,
-} from "../../../protos/models/key_value_service_pb";
+} from "ssr-grpc-proto-lib/models/key_value_service_pb";
 
 class KeyValue implements IKeyValueServer {
   // Argument of type 'Greeter' is not assignable to parameter of

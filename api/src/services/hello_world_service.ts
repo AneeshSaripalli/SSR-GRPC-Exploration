@@ -8,11 +8,11 @@ import {
   UntypedHandleCall,
 } from "@grpc/grpc-js";
 import { randomBytes } from "crypto";
-import { IGreeterServer } from "../../../protos/models/hello_world_grpc_pb";
+import { IGreeterServer } from "ssr-grpc-proto-lib/models/hello_world_grpc_pb";
 import {
   HelloRequest,
   HelloResponse,
-} from "../../../protos/models/hello_world_pb";
+} from "ssr-grpc-proto-lib/models/hello_world_pb";
 import { ServiceError } from "./error";
 
 /**
