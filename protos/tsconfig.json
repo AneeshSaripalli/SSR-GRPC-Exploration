@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "paths": {},
     "target": "ES2019",
-    "outDir": "dist",
+    "outDir": "models",
     "module": "commonjs",
     "moduleResolution": "node",
     "incremental": true,
