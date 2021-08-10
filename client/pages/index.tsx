@@ -21,9 +21,7 @@ export default function Home(props: IProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        Response: {props.response.value || ""}
-      </main>
+      <main className={styles.main}>Response: {props.response.value}</main>
 
       <footer className={styles.footer}>
         <a
@@ -45,13 +43,11 @@ export const getServerSideProps: GetServerSideProps = async (
   context
 ): Promise<{ props: IProps }> => {
   const request = new GetValuesRequest();
-  const response: GetValuesResponse =
-    await getService().keyValueService.getValues(request);
-  console.log(response);
+  const response = await getService().keyValueService.getValues(request);
 
   return {
     props: {
-      response: { value: "10" },
+      response: response.toObject(),
     },
   };
 };
