@@ -1,7 +1,10 @@
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { GetValuesResponse } from "ssr-grpc-proto-lib/models/key_value_service_pb";
+import {
+  GetValuesRequest,
+  GetValuesResponse,
+} from "ssr-grpc-proto-lib/models/key_value_service_pb";
 import styles from "../styles/Home.module.css";
 import { getService } from "./api/services";
 
@@ -39,11 +42,12 @@ export default function Home(props: IProps) {
 export const getServerSideProps: GetServerSideProps = async (
   context
 ): Promise<{ props: IProps }> => {
-  const response = await getService().keyValueService.getValues();
+  const request = new GetValuesRequest();
+  const response = await getService().keyValueService.getValues(request);
 
   return {
     props: {
-      response,
+      response: response.toObject(),
     },
   };
 };

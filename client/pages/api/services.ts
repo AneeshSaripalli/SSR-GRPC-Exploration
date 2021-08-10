@@ -5,25 +5,42 @@ import {
   GetValuesRequest,
   GetValuesResponse,
 } from "ssr-grpc-proto-lib/models/key_value_service_pb";
+import { GrpcCall, GrpcPromise } from "./grpc/types";
 
 const service = new KeyValueClient(
-  // Don't prefix with http://
+  // ! Don't prefix with http:// or https://
   "localhost:50051",
   ChannelCredentials.createInsecure(),
   {}
 );
 
-export const getService = () => ({
+// Helper function to convert the Grpc callback syntax into
+// a promise with async/await syntax.
+const promisifyGrpc =
+  <IRequest, IResponse>(func: GrpcCall<IRequest, IResponse>) =>
+  (request: IRequest): Promise<IResponse> =>
+    new Promise<IResponse>((resolve, reject) =>
+      func(request, (err, response) => {
+        if (err) return reject(err);
+        return resolve(response);
+      })
+    );
+
+// Type definition for the service initializer.
+// Not sure this is required.
+type IService = {
   keyValueService: {
-    getValues: () => {
-      const request = new GetValuesRequest();
-      request.setKey("1234");
-      return new Promise<GetValuesResponse.AsObject>((resolve, reject) =>
-        service.getValues(request, (err, response) => {
-          if (err) return reject(err);
-          return resolve(response.toObject());
-        })
-      );
-    },
+    getValues: GrpcPromise<GetValuesRequest, GetValuesResponse>;
+  };
+};
+
+// NOTE: Typescript can't infer the implicit types on the GRPC
+// callback, which means we need to explicitly specify the response
+// type. https://github.com/microsoft/TypeScript/issues/31146
+export const getService = (): IService => ({
+  keyValueService: {
+    getValues: promisifyGrpc<GetValuesRequest, GetValuesResponse>(
+      service.getValues
+    ),
   },
 });
