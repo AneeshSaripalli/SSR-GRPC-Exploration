@@ -5,11 +5,12 @@ import {
   GetValuesRequest,
   GetValuesResponse,
 } from "ssr-grpc-proto-lib/models/key_value_service_pb";
+import { config } from "../env";
 import { GrpcCall, GrpcPromise } from "./grpc/types";
 
 const service = new KeyValueClient(
   // ! Don't prefix with http:// or https://
-  "localhost:50051",
+  `${config.API_HOST}:${config.API_PORT}`,
   ChannelCredentials.createInsecure(),
   {}
 );
@@ -19,12 +20,12 @@ const service = new KeyValueClient(
 const promisifyGrpc =
   <IRequest, IResponse>(func: GrpcCall<IRequest, IResponse>) =>
   (request: IRequest): Promise<IResponse> =>
-    new Promise<IResponse>((resolve, reject) =>
+    new Promise<IResponse>((resolve, reject) => {
       func(request, (err, response) => {
         if (err) return reject(err);
         return resolve(response);
-      })
-    );
+      });
+    });
 
 // Type definition for the service initializer.
 // Not sure this is required.
@@ -39,8 +40,10 @@ type IService = {
 // type. https://github.com/microsoft/TypeScript/issues/31146
 export const getService = (): IService => ({
   keyValueService: {
-    getValues: promisifyGrpc<GetValuesRequest, GetValuesResponse>(
-      service.getValues
-    ),
+    getValues: (() => {
+      return promisifyGrpc<GetValuesRequest, GetValuesResponse>(
+        service.getValues.bind(service)
+      );
+    })(),
   },
 });
