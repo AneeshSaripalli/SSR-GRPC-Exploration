@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package main;
+
+service InventoryManagment {
+  rpc CreateItem (CreateItemRequest) returns (CreateItemResponse);
+  rpc GetItem(GetItemRequest) returns (GetItemResponse);
+}
+
+message InventoryItem {
+  string item_id = 1;
+  string name = 2;
+  string description = 3;
+  string image_url = 4;
+}
+
+message GetItemRequest {
+  string item_id = 1;
+}
+
+message GetItemResponse {
+  InventoryItem item = 1;
+}
+
+message CreateItemRequest {
+  InventoryItem item = 1;
+}
+
+message CreateItemResponse {
+  bool success = 1;
+}
