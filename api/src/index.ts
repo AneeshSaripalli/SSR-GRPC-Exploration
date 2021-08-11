@@ -5,6 +5,7 @@ import { KeyValueService } from "ssr-grpc-proto-lib/models/key_value_service_grp
 import { Greeter } from "./services/hello_world_service";
 import { InventoryManagement } from "./services/inventory_management_service";
 import { KeyValue } from "./services/key_value_service";
+import { constructGrpcService } from "./services/types";
 
 // Do not use @grpc/proto-loader
 const server = new Server({
@@ -14,7 +15,10 @@ const server = new Server({
 
 server.addService(KeyValueService, new KeyValue());
 server.addService(GreeterService, new Greeter());
-server.addService(InventoryManagmentService, new InventoryManagement());
+server.addService(
+  InventoryManagmentService,
+  constructGrpcService(new InventoryManagement())
+);
 
 server.bindAsync(
   "0.0.0.0:50051",

@@ -1,4 +1,3 @@
-import { UntypedHandleCall } from "@grpc/grpc-js";
 import { IInventoryManagmentServer } from "ssr-grpc-proto-lib/models/inventory_management_grpc_pb";
 import {
   CreateItemRequest,
@@ -6,23 +5,23 @@ import {
   GetItemRequest,
   GetItemResponse,
 } from "ssr-grpc-proto-lib/models/inventory_management_pb";
-import { createGrpcHandler } from "./types";
+import { IHandler, UntypedGrpcServiceInterface } from "./types";
 
-export class InventoryManagement implements IInventoryManagmentServer {
-  [method: string]: UntypedHandleCall;
+export class InventoryManagement
+  implements UntypedGrpcServiceInterface<IInventoryManagmentServer>
+{
+  [method: string]: IHandler<any, any>;
 
-  public createItem = createGrpcHandler<CreateItemRequest, CreateItemResponse>(
-    (_request) => {
-      const response = new CreateItemResponse();
-      response.setSuccess(true);
-      return response;
-    }
-  );
+  public createItem: IHandler<CreateItemRequest, CreateItemResponse> = (
+    _request: CreateItemRequest
+  ) => {
+    const response = new CreateItemResponse();
+    response.setSuccess(true);
+    return response;
+  };
 
-  public getItem = createGrpcHandler<GetItemRequest, GetItemResponse>(
-    (request) => {
-      const response = new GetItemResponse();
-      return response;
-    }
-  );
+  public getItem: IHandler<GetItemRequest, GetItemResponse> = (request) => {
+    const response = new GetItemResponse();
+    return response;
+  };
 }
