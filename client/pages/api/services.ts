@@ -1,5 +1,12 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { ChannelCredentials } from "@grpc/grpc-js";
+import { InventoryManagmentClient } from "ssr-grpc-proto-lib/models/inventory_management_grpc_pb";
+import {
+  CreateItemRequest,
+  CreateItemResponse,
+  GetItemRequest,
+  GetItemResponse,
+} from "ssr-grpc-proto-lib/models/inventory_management_pb";
 import { KeyValueClient } from "ssr-grpc-proto-lib/models/key_value_service_grpc_pb";
 import {
   GetValuesRequest,
@@ -8,7 +15,14 @@ import {
 import { config } from "../env";
 import { GrpcCall, GrpcPromise } from "./grpc/types";
 
-const service = new KeyValueClient(
+const keyValueService = new KeyValueClient(
+  // ! Don't prefix with http:// or https://
+  `${config.API_HOST}:${config.API_PORT}`,
+  ChannelCredentials.createInsecure(),
+  {}
+);
+
+const inventoryManagementService = new InventoryManagmentClient(
   // ! Don't prefix with http:// or https://
   `${config.API_HOST}:${config.API_PORT}`,
   ChannelCredentials.createInsecure(),
@@ -33,6 +47,10 @@ type IService = {
   keyValueService: {
     getValues: GrpcPromise<GetValuesRequest, GetValuesResponse>;
   };
+  inventoryManagementService: {
+    createItem: GrpcPromise<CreateItemRequest, CreateItemResponse>;
+    getItem: GrpcPromise<GetItemRequest, GetItemResponse>;
+  };
 };
 
 // NOTE: Typescript can't infer the implicit types on the GRPC
@@ -42,7 +60,19 @@ export const getService = (): IService => ({
   keyValueService: {
     getValues: (() => {
       return promisifyGrpc<GetValuesRequest, GetValuesResponse>(
-        service.getValues.bind(service)
+        keyValueService.getValues.bind(keyValueService)
+      );
+    })(),
+  },
+  inventoryManagementService: {
+    createItem: (() => {
+      return promisifyGrpc<CreateItemRequest, CreateItemResponse>(
+        inventoryManagementService.createItem.bind(inventoryManagementService)
+      );
+    })(),
+    getItem: (() => {
+      return promisifyGrpc<GetItemRequest, GetItemResponse>(
+        inventoryManagementService.getItem.bind(inventoryManagementService)
       );
     })(),
   },

@@ -42,8 +42,10 @@ export default function Home(props: IProps) {
 export const getServerSideProps: GetServerSideProps = async (
   context
 ): Promise<{ props: IProps }> => {
+  const services = getService();
+
   const request = new GetValuesRequest();
-  const response = await getService().keyValueService.getValues(request);
+  const response = await services.keyValueService.getValues(request);
 
   return {
     props: {
