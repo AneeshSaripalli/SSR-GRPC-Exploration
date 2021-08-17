@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+  api:
+    image: 127.0.0.1:5000/ssr-grpc:api
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    ports:
+      - "50051:50051"
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+  client:
+    image: 127.0.0.1:5000/ssr-grpc:client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  db:
+    image: cassandra
+    ports:
+      - 7000:7000
+      - 7001:7001
+      - 7199:7199 # nodetool
+      - 9162:9162
+      - 9042:9042
+    volumes:
+      - cassanda_data:/var/lib/cassandra
+
+volumes:
+  cassanda_data:
