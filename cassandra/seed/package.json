@@ -1,0 +1,21 @@
+{
+  "name": "seed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cassandra-driver": "^4.6.3",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/cassandra-driver": "^4.2.0",
+    "@types/uuid": "^8.3.1"
+  }
+}
