@@ -32,17 +32,20 @@ services:
       - 10000:9042
     volumes:
       - cassanda_data_1:/var/lib/cassandra
-      - ./cassanda/cassandra.yaml:/etc/cassandra/cassanda.yaml
+      # - ./cassandra/cassandra.yaml:/etc/cassandra/cassandra.yaml
+    environment:
+      - CASSANDRA_SEEDS=db1,db2
   db2:
     image: cassandra
     networks:
       - network_cassandra
     volumes:
       - cassanda_data_2:/var/lib/cassandra
-      - ./cassanda/cassandra.yaml:/etc/cassandra/cassanda.yaml
+      # - ./cassandra/cassandra.yaml:/etc/cassandra/cassandra.yaml
     ports:
       - 10001:9042
-
+    environment:
+      - CASSANDRA_SEEDS=db1,db2
 volumes:
   cassanda_data_1:
   cassanda_data_2:
