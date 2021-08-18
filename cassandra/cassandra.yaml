@@ -1,0 +1,6 @@
+cluster_name: "Test Cluster"
+listen_address: localhost
+commitlog_sync: "periodic"
+commitlog_total_space_in_mb: 4
+seed_provider:
+  seeds: db1,db2

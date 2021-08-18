@@ -21,16 +21,32 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
-  db:
+  db1:
     image: cassandra
+    networks:
+      - network_cassandra
     ports:
       - 7000:7000
       - 7001:7001
-      - 7199:7199 # nodetool
       - 9162:9162
-      - 9042:9042
+      - 10000:9042
     volumes:
-      - cassanda_data:/var/lib/cassandra
+      - cassanda_data_1:/var/lib/cassandra
+      - ./cassanda/cassandra.yaml:/etc/cassandra/cassanda.yaml
+  db2:
+    image: cassandra
+    networks:
+      - network_cassandra
+    volumes:
+      - cassanda_data_2:/var/lib/cassandra
+      - ./cassanda/cassandra.yaml:/etc/cassandra/cassanda.yaml
+    ports:
+      - 10001:9042
 
 volumes:
-  cassanda_data:
+  cassanda_data_1:
+  cassanda_data_2:
+
+networks:
+  network_cassandra:
+    driver: bridge

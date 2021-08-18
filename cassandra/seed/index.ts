@@ -1,16 +1,27 @@
 import { Client, ClientOptions } from "cassandra-driver";
-import { emulate_activity } from "./modules/emulate_activity";
+import { emulateClientActivity } from "./modules/emulate_activity";
+
+const hosts: string[] = process.env.HOSTS!.split(",");
 
 const options: ClientOptions = {
-  contactPoints: [process.env.HOST!],
+  contactPoints: hosts,
   localDataCenter: "datacenter1",
 };
 
-async function main() {
+function main() {
   const cassandraClient = new Client(options);
-  await cassandraClient.connect();
+  console.log("Connecting to Cassandra...");
+  return cassandraClient
+    .connect()
+    .then((value) => {
+      console.log("Connected to hosts: ", hosts);
 
-  await emulate_activity(cassandraClient);
+      console.log("Emulating clients");
+      return emulateClientActivity(cassandraClient).then(() => {
+        console.log("Exiting...");
+      });
+    })
+    .catch(console.error);
 }
 
-main();
+main().then((value) => process.exit(0));
