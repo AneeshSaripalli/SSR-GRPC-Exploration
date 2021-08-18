@@ -5,7 +5,7 @@ import faker from "faker";
 const createKeyspace = `CREATE KEYSPACE IF NOT EXISTS inventory \ 
                             WITH REPLICATION = { \
                                 'class' : 'SimpleStrategy', \ 
-                                'replication_factor': 1 \ 
+                                'replication_factor': 2 \ 
                             };`;
 const createTable = `CREATE TABLE IF NOT EXISTS inventory.main ( \
                                     id UUID PRIMARY KEY,
